@@ -1,0 +1,9 @@
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+src/food-blog/__init__.py
+src/food_blog.egg-info/PKG-INFO
+src/food_blog.egg-info/SOURCES.txt
+src/food_blog.egg-info/dependency_links.txt
+src/food_blog.egg-info/top_level.txt
