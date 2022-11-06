@@ -26,3 +26,7 @@ Have fun!
 ## Progress
 
 05.11.22 Project started - gitHub repo and project structure setup.
+
+06.11.22 Stage 1 completed - create SQLite3 database tables from Python and populate them with initial data, 
+some OOP design used here (first time with Python)
+
