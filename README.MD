@@ -27,6 +27,8 @@ Stage 1: just database creation and initialization
 
 Stage 2: first recipe entry loop by the user
 
+Stage 3: recipes for dishes may now be entered in N:N-relation to the meals they belong to
+
 Have fun!
 
 
@@ -42,4 +44,8 @@ Have fun!
 some OOP design used here (first time with Python)
 
 06.11.22 Stage 2 completed - add recipe table, ask for dishes and recipes in a loop and persist them
+
+06.11.22 Stage 3 completed - add serve table as many-to-many relation table between meals and recipes,
+use Cursors lastrowid method, handle IntegrityError for already inserted data
+
 
