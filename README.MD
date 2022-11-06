@@ -11,6 +11,12 @@ Implemented in the Track 'SQL with Python' of hyperskill.org's JetBrains Academy
 
 The sources of main project tasks (5 stages) and testing.
 
+## Installation
+
+Install the wheel file using pip after clone/fork:
+
+> $ pip install dist/food_blog-3.10-py3-none-any.whl
+
 ## Program description
 
 The toy project implements a simple Python backend that will allow to populate an SQLite3 database with recipes. 
@@ -22,6 +28,7 @@ Stage 1: just database creation and initialization
 Stage 2: first recipe entry loop by the user
 
 Have fun!
+
 
 ## Project completion
 
