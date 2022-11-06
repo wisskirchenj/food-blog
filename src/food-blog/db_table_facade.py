@@ -20,4 +20,11 @@ class DbTableFacade:
         insert_query = f'INSERT INTO {self.table_name} ({column_name}) VALUES(?)'
         print(insert_query)
         connection.executemany(insert_query, ((val, ) for val in values))
+        connection.commit()
 
+    def insert(self, connection: Connection, col_names: tuple, values: tuple):
+        values_str = ', '.join(f'"{val}"' for val in values)
+        col_str = ', '.join(col_names)
+        insert_query = f'INSERT INTO {self.table_name} ({col_str}) VALUES({values_str})'
+        print(insert_query)
+        connection.execute(insert_query)

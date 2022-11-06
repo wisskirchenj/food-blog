@@ -17,6 +17,10 @@ The toy project implements a simple Python backend that will allow to populate a
 We deal from Python with an auto-increment primary key and use foreign keys to create relationships
 between tables. We work with many-to-many relations, with SQL queries, and with database cursor methods.
 
+Stage 1: just database creation and initialization
+
+Stage 2: first recipe entry loop by the user
+
 Have fun!
 
 ## Project completion
@@ -29,4 +33,6 @@ Have fun!
 
 06.11.22 Stage 1 completed - create SQLite3 database tables from Python and populate them with initial data, 
 some OOP design used here (first time with Python)
+
+06.11.22 Stage 2 completed - add recipe table, ask for dishes and recipes in a loop and persist them
 

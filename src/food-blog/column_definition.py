@@ -4,4 +4,4 @@ class ColumnDefinition:
         self.definition = column_data['definition']
 
     def __repr__(self):
-        return ' '.join([self.name, self.definition])
+        return ' '.join((self.name, self.definition))

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/src/food-blog/db_table_facade.py" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/food-blog/db_table_facade.py" dialect="SQLite" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/74ca8316-1905-40ed-999d-f3eb844e4583/console.sql" dialect="H2" />
     <file url="PROJECT" dialect="SQLite" />
   </component>
 </project>
