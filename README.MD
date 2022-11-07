@@ -5,7 +5,7 @@ Implemented in the Track 'SQL with Python' of hyperskill.org's JetBrains Academy
 ## Technology / External Libraries
 
 - Python 3.10.8,
-- with packages: sqlite3, argparse, scikit-learn, tox, black and isort
+- with packages: sqlite3, sys, sty, argparse, scikit-learn, tox, black and isort
 
 ## Repository Contents
 
@@ -29,6 +29,13 @@ Stage 2: first recipe entry loop by the user
 
 Stage 3: recipes for dishes may now be entered in N:N-relation to the meals they belong to
 
+Stage 4: now ingredients with quantities can be added to the recipe. The input of arbitrary many ingredients per recipe
+with quantity and measures is (too ?) sophisticated: 
+1) ingredient: any substring of an ingredient is valid, as long unique over all ingredients
+2) for a measure (as l, kg, tsp, ...) the table-entry must _start_ with the given user input and be unique.
+3) If no measure is given, an empty measure is taken (e.g. 3 apples).
+For persistence of ingredients a quantity table is used, that has 3 FKs to the recipes, ingredients and measures table
+
 Have fun!
 
 
@@ -48,4 +55,6 @@ some OOP design used here (first time with Python)
 06.11.22 Stage 3 completed - add serve table as many-to-many relation table between meals and recipes,
 use Cursors lastrowid method, handle IntegrityError for already inserted data
 
-
+06.11.22 Stage 4 completed - another many-to-many relation quantity table added with 3 foreign keys.
+The DbTableFacade gets a generic select()-method, that uses a SelectData-class as input. Logging of
+queries and Select-result sets is done in colored messages using package sty

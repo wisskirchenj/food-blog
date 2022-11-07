@@ -1,70 +1,74 @@
-import sys
+from sys import argv
 from sqlite3 import Connection, connect
-from db_table_facade import DbTableFacade
 
-INT_PK = 'integer primary key'
-TABLE_DEFINITION_DATA = (
-    {'name': 'measures',
-     'columns': ({'name': 'measure_id', 'definition': INT_PK},
-                 {'name': 'measure_name', 'definition': 'text unique'})
-     },
-    {'name': 'ingredients',
-     'columns': ({'name': 'ingredient_id', 'definition': INT_PK},
-                 {'name': 'ingredient_name', 'definition': 'text not null unique'})
-     },
-    {'name': 'meals',
-     'columns': ({'name': 'meal_id', 'definition': INT_PK},
-                 {'name': 'meal_name', 'definition': 'text not null unique'})
-     },
-    {'name': 'recipes',
-     'columns': ({'name': 'recipe_id', 'definition': INT_PK},
-                 {'name': 'recipe_name', 'definition': 'text not null'},
-                 {'name': 'recipe_description', 'definition': 'text'})
-     },
-    {'name': 'serve',
-     'columns': ({'name': 'serve_id', 'definition': INT_PK},
-                 {'name': 'meal_id', 'definition': 'integer not null'},
-                 {'name': 'recipe_id', 'definition': 'integer not null'}),
-     'foreign_keys': ({'column': 'meal_id', 'parent_table': 'meals',
-                       'parent_column': 'meal_id'},
-                      {'column': 'recipe_id', 'parent_table': 'recipes',
-                       'parent_column': 'recipe_id'})
-     }
-)
-TABLE_DATA = {'meals': ('breakfast', 'brunch', 'lunch', 'supper'),
-              'ingredients': ('milk', 'cacao', 'strawberry', 'blueberry', 'blackberry', 'sugar'),
-              'measures': ('ml', 'g', 'l', 'cup', 'tbsp', 'tsp', 'dsp', '')}
+import data
+from db_table_facade import DbTableFacade
+from select_definition import SelectData
+
+
+def get_ingredient_id(connection, ingredient_table, ingredient):
+    result = ingredient_table \
+        .select(connection, SelectData(('ingredient_id',), f'ingredient_name LIKE "%{ingredient}%"'))
+    if len(result) != 1:
+        print(data.INVALID_INGREDIENT_MSG)
+        return None
+    return result[0][0]
+
+
+def get_measure_id(connection, measure_table, measure):
+    where_clause = 'measure_name = ""' if measure == '' else f'measure_name LIKE "{measure}%"'
+    result = measure_table.select(connection, SelectData(('measure_id',), where_clause))
+    if len(result) != 1:
+        print(data.INVALID_MEASURE_MSG)
+        return None
+    return result[0][0]
+
+
+def ingredient_input_loop(connection: Connection, tables: dict, recipe_id: int):
+    quantity_input = input(data.QUANTITY_INPUT_MSG)
+    while quantity_input != "":
+        tokens = quantity_input.split()
+        ingredient_id = get_ingredient_id(connection, tables['ingredients'], tokens[-1])
+        if ingredient_id is not None:
+            measure_id = get_measure_id(connection, tables['measures'],
+                                        '' if len(tokens) == 2 else tokens[1])
+            if measure_id is not None:
+                tables['quantity'].insert(connection, ('quantity', 'recipe_id', 'measure_id', 'ingredient_id'),
+                                          (tokens[0], recipe_id, measure_id, ingredient_id))
+        quantity_input = input(data.QUANTITY_INPUT_MSG)
 
 
 def recipe_input_loop(connection: Connection, tables: dict):
-    print('Hit return when prompted for recipe name to exit.')
-    recipe_name = input('Recipe name: ')
+    print(data.RECIPE_START_MSG)
+    recipe_name = input(data.RECIPE_NAME_MSG)
     while recipe_name != "":
-        recipe_description = input('Recipe description: ')
-        print('  '.join(f'{i + 1}) {meal}' for i, meal in enumerate(TABLE_DATA['meals'])))
-        meal_ids = input('Choose meals from above (#s space-separated), where the dish can be served: ').split()
+        recipe_description = input(data.RECIPE_DESCRIPTION_MSG)
+        meals = tables['meals'].select(connection, SelectData(('meal_id', 'meal_name')))
+        print('  '.join(str(row[0]) + ") " + row[1] for row in meals))
+        meal_ids = input(data.CHOOSE_MEALS_MSG).split()
         recipe_id = tables['recipes'].insert(connection, ('recipe_name', 'recipe_description'),
                                              (recipe_name, recipe_description))
         for meal_id in meal_ids:
             tables['serve'].insert(connection, ('recipe_id', 'meal_id'),
-                                   (recipe_id, int(meal_id)))
-        recipe_name = input('Recipe name: ')
+                                   (recipe_id, meal_id))
+        ingredient_input_loop(connection, tables, recipe_id)
+        recipe_name = input(data.RECIPE_NAME_MSG)
 
 
 def init_database(connection: Connection):
-    connection.execute('pragma foreign_keys=ON')
+    connection.execute('PRAGMA FOREIGN_KEYS=ON')
     connection.commit()
 
 
 def main():
-    with connect(sys.argv[1]) as connection:
+    with connect(argv[1]) as connection:
         init_database(connection)
         db_tables = {}
-        for table_entry in TABLE_DEFINITION_DATA:
+        for table_entry in data.TABLE_DEFINITION_DATA:
             table = DbTableFacade(table_entry)
             db_tables[table.table_name] = table
             table.create(connection)
-            table.single_value_inserts(connection, 1, TABLE_DATA.get(table.table_name, []))
+            table.single_value_inserts(connection, 1, data.TABLE_DATA.get(table.table_name, []))
         recipe_input_loop(connection, db_tables)
     connection.close()
 
