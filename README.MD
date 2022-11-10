@@ -46,7 +46,7 @@ Have fun!
 
 ## Project completion
 
-Project was completed on 10.11.22.)
+Project was completed on 10.11.22.
 
 ## Progress
 
