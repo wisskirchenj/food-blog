@@ -36,12 +36,17 @@ with quantity and measures is (too ?) sophisticated:
 3) If no measure is given, an empty measure is taken (e.g. 3 apples).
 For persistence of ingredients a quantity table is used, that has 3 FKs to the recipes, ingredients and measures table
 
+Stage 5: new CL parameters --ingredients and --meals are possible with list values (e.g. --ingredients="sugar,milk" or
+--meals="breakfast, lunch"), that when given select all recipes in the database, that contain ALL ingredients and
+are served at at least one of the given meals. If both are npt provided, the application takes new input exactly
+as in stage 4.
+
 Have fun!
 
 
 ## Project completion
 
-[//]: # (Project was completed on dd.mm.22.)
+Project was completed on 10.11.22.)
 
 ## Progress
 
@@ -58,3 +63,6 @@ use Cursors lastrowid method, handle IntegrityError for already inserted data
 06.11.22 Stage 4 completed - another many-to-many relation quantity table added with 3 foreign keys.
 The DbTableFacade gets a generic select()-method, that uses a SelectData-class as input. Logging of
 queries and Select-result sets is done in colored messages using package sty
+
+10.11.22 Stage 5 completed - a new RecipeSelector class is added to handle the complex recipe queries
+for the provided filters (intense use of Python's set operation as well as list, tuple)
