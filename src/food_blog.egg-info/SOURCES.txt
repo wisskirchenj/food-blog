@@ -9,11 +9,13 @@ src/food-blog/data.py
 src/food-blog/db_table_facade.py
 src/food-blog/food_blog.db
 src/food-blog/foreign_key_definition.py
+src/food-blog/recipe_selector.py
 src/food-blog/select_definition.py
 src/food-blog/__pycache__/column_definition.cpython-310.pyc
 src/food-blog/__pycache__/data.cpython-310.pyc
 src/food-blog/__pycache__/db_table_facade.cpython-310.pyc
 src/food-blog/__pycache__/foreign_key_definition.cpython-310.pyc
+src/food-blog/__pycache__/recipe_selector.cpython-310.pyc
 src/food-blog/__pycache__/select_definition.cpython-310.pyc
 src/food_blog.egg-info/PKG-INFO
 src/food_blog.egg-info/SOURCES.txt
